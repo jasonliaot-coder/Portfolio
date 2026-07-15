@@ -1,0 +1,1733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jason - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background: #0a0a2e;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes bgStrobe {
+            0% { background: #0a0a2e; }
+            25% { background: #1a0a3e; }
+            50% { background: #0a1a3e; }
+            75% { background: #2a0a4e; }
+            100% { background: #0a0a2e; }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff006e, #8338ec, #3a86ff, #06d6a0, #ffbe0b);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Background code symbols */
+        .bg-symbols {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-symbols span {
+            position: absolute;
+            font-size: 1.2rem;
+            color: #ff006e;
+            opacity: 0.3;
+            user-select: none;
+            animation: symbolPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes symbolPulse {
+            0%, 100% { opacity: 0.15; color: #ff006e; }
+            25% { opacity: 0.4; color: #8338ec; }
+            50% { opacity: 0.2; color: #3a86ff; }
+            75% { opacity: 0.35; color: #06d6a0; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 1.2rem 2rem;
+            background: rgba(10, 10, 46, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 2px solid transparent;
+            animation: navBorderStrobe 4s linear infinite;
+        }
+
+        @keyframes navBorderStrobe {
+            0% { border-bottom-color: #ff006e; }
+            25% { border-bottom-color: #8338ec; }
+            50% { border-bottom-color: #3a86ff; }
+            75% { border-bottom-color: #06d6a0; }
+            100% { border-bottom-color: #ff006e; }
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #c4b5fd;
+            font-size: 0.95rem;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            transition: color 0.2s, text-shadow 0.2s;
+        }
+
+        nav a:hover {
+            color: #ff006e;
+            text-shadow: 0 0 10px #ff006e, 0 0 20px #ff006e;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 6rem;
+        }
+
+        .hero-greeting {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+            animation: textGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes textGlow {
+            0%, 100% { text-shadow: 0 0 5px #ff006e, 0 0 10px #ff006e; }
+            33% { text-shadow: 0 0 5px #3a86ff, 0 0 10px #3a86ff; }
+            66% { text-shadow: 0 0 5px #06d6a0, 0 0 10px #06d6a0; }
+        }
+
+        .hero-greeting .wave {
+            display: inline-block;
+            animation: wave 2.5s infinite;
+            transform-origin: 70% 70%;
+            font-size: 2.2rem;
+            filter: drop-shadow(0 0 8px #ffbe0b);
+        }
+
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            10% { transform: rotate(14deg); }
+            20% { transform: rotate(-8deg); }
+            30% { transform: rotate(14deg); }
+            40% { transform: rotate(-4deg); }
+            50% { transform: rotate(10deg); }
+            60% { transform: rotate(0deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .hero-name {
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .hero-name .first {
+            color: #ffffff;
+        }
+
+        .hero-name .last {
+            background: linear-gradient(90deg, #ff006e, #8338ec, #3a86ff, #06d6a0, #ffbe0b);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: rainbowStrobe 3s linear infinite;
+        }
+
+        @keyframes rainbowStrobe {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .hero-title {
+            font-size: 1.1rem;
+            color: #a78bfa;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin-bottom: 3rem;
+            animation: titleStrobe 5s ease-in-out infinite;
+        }
+
+        @keyframes titleStrobe {
+            0%, 100% { color: #a78bfa; }
+            25% { color: #ff006e; }
+            50% { color: #3a86ff; }
+            75% { color: #06d6a0; }
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            color: #c4b5fd;
+            transition: color 0.2s, transform 0.2s, text-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .social-links a:hover {
+            color: #ff006e;
+            transform: translateY(-2px);
+            text-shadow: 0 0 15px #ff006e;
+        }
+
+        .social-links svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Sections */
+        section {
+            position: relative;
+            z-index: 1;
+            padding: 5rem 6rem;
+        }
+
+        section h2 {
+            font-size: 2rem;
+            color: #ffffff;
+            margin-bottom: 2rem;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            animation: headingStrobe 6s ease-in-out infinite;
+        }
+
+        @keyframes headingStrobe {
+            0%, 100% { color: #ffffff; text-shadow: 0 0 5px #8338ec; }
+            25% { color: #ffbe0b; text-shadow: 0 0 10px #ffbe0b; }
+            50% { color: #06d6a0; text-shadow: 0 0 10px #06d6a0; }
+            75% { color: #ff006e; text-shadow: 0 0 10px #ff006e; }
+        }
+
+        section h2::before {
+            content: '# ';
+            color: #ff006e;
+            animation: hashStrobe 2s ease-in-out infinite;
+        }
+
+        @keyframes hashStrobe {
+            0%, 100% { color: #ff006e; }
+            33% { color: #3a86ff; }
+            66% { color: #06d6a0; }
+        }
+
+        /* About */
+        .about-content {
+            max-width: 700px;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #c4b5fd;
+        }
+
+        /* Projects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.8rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.1);
+        }
+
+        .project-card h3 {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .project-card p {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .project-tags span {
+            background: #eff6ff;
+            color: #2563eb;
+            padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        /* Experience */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 2px solid #8338ec;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.4rem;
+            top: 0.4rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff006e;
+            border: 3px solid #0a0a2e;
+            animation: dotStrobe 2s ease-in-out infinite;
+        }
+
+        @keyframes dotStrobe {
+            0%, 100% { background: #ff006e; box-shadow: 0 0 5px #ff006e; }
+            33% { background: #3a86ff; box-shadow: 0 0 5px #3a86ff; }
+            66% { background: #06d6a0; box-shadow: 0 0 5px #06d6a0; }
+        }
+
+        .timeline-item h3 {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 1.15rem;
+            color: #ffffff;
+            margin-bottom: 0.2rem;
+        }
+
+        .timeline-item .company {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: #ffbe0b;
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .timeline-item .period {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: #a78bfa;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item p {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: #c4b5fd;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Education */
+        .education-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .education-item {
+            background: rgba(131, 56, 236, 0.1);
+            border: 1px solid #8338ec;
+            border-radius: 12px;
+            padding: 1.5rem 1.8rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .education-item:hover {
+            border-color: #ff006e;
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.2);
+        }
+
+        .education-item h3 {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 1.15rem;
+            color: #ffffff;
+            margin-bottom: 0.2rem;
+        }
+
+        .education-item .school {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: #ffbe0b;
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .education-item .period {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: #a78bfa;
+            font-size: 0.85rem;
+        }
+
+        /* Warship Battle Game */
+        .warship-section {
+            text-align: center;
+        }
+
+        .warship-canvas {
+            border: 2px solid #8338ec;
+            border-radius: 12px;
+            background: rgba(10, 10, 46, 0.8);
+            display: block;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 0 30px rgba(131, 56, 236, 0.3);
+            max-width: 100%;
+        }
+
+        .spawn-btn {
+            background: linear-gradient(135deg, #ff006e, #8338ec);
+            color: #ffffff;
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .spawn-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255, 0, 110, 0.6);
+        }
+
+        .spawn-btn:active {
+            transform: scale(0.95);
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 1.1rem;
+            color: #c4b5fd;
+        }
+
+        .game-stats span {
+            padding: 0.5rem 1rem;
+            background: rgba(131, 56, 236, 0.2);
+            border-radius: 8px;
+            border: 1px solid #8338ec;
+        }
+
+        .game-stats .score { color: #06d6a0; }
+        .game-stats .enemies { color: #ff006e; }
+        .game-stats .warships { color: #3a86ff; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .warship-canvas {
+                width: 100%;
+                height: auto;
+            }
+
+            .game-stats {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .hero {
+                padding: 0 2rem;
+            }
+
+            .hero-name {
+                font-size: 2.5rem;
+            }
+
+            .hero-greeting {
+                font-size: 1.8rem;
+            }
+
+            section {
+                padding: 3rem 2rem;
+            }
+
+            nav {
+                gap: 1rem;
+            }
+
+            nav a {
+                font-size: 0.85rem;
+            }
+
+            .timeline-item::before {
+                border-color: #0a0a2e;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Symbols -->
+    <div class="bg-symbols" id="bgSymbols"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#education">Education</a>
+        <a href="#warship">Warships</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-greeting">
+            Hello! <span class="wave">👋</span>
+        </div>
+        <div class="hero-name">
+            <span class="first">I'm </span><span class="last">Jason</span>
+        </div>
+        <div class="hero-title">Beginner Software Engineer &amp; Vibe Coder</div>
+
+        <div class="social-links">
+            <a href="mailto:jason@example.com" aria-label="Email">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2"/>
+                    <path d="M22 4L12 13L2 4"/>
+                </svg>
+            </a>
+            <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/>
+                    <rect x="2" y="9" width="4" height="12"/>
+                    <circle cx="4" cy="4" r="2"/>
+                </svg>
+            </a>
+            <a href="https://x.com" target="_blank" aria-label="X (Twitter)">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+            </a>
+            <a href="https://github.com" target="_blank" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2>About</h2>
+        <div style="display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Scottish_Fold_-_Sooty.jpg/440px-Scottish_Fold_-_Sooty.jpg" alt="Scottish Fold Cat" style="width: 200px; height: 200px; object-fit: cover; border-radius: 12px; border: 2px solid #8338ec; box-shadow: 0 0 20px rgba(131, 56, 236, 0.4);" />
+            <div class="about-content" style="flex: 1; min-width: 300px;">
+                <p>I'm a beginner software engineer born and raised in Toronto, Canada, and I also want to be a biologist one day. I'm new to the world of coding but incredibly enthusiastic about vibe coding — building cool stuff by riding the creative wave and letting the ideas flow.</p>
+                <br>
+                <p>When I'm not coding, I like to play games like Minecraft and Geometry Dash, or hit the court and rink for badminton and hockey.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2>Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card" style="background: rgba(131, 56, 236, 0.1); border: 1px solid #8338ec;">
+                <h3 style="color: #ffffff;">Warship Battle</h3>
+                <p style="color: #c4b5fd;">A base defense game with waves of enemies, turrets, base defenders, and a playable green warship with melee combat. Built with HTML5 Canvas and JavaScript.</p>
+                <div class="project-tags">
+                    <span>HTML5</span>
+                    <span>Canvas</span>
+                    <span>JavaScript</span>
+                </div>
+            </div>
+            <div class="project-card" style="background: rgba(131, 56, 236, 0.1); border: 1px solid #8338ec;">
+                <h3 style="color: #ffffff;">Portfolio Website</h3>
+                <p style="color: #c4b5fd;">This portfolio website featuring a vibrant neon theme with strobing animations, background code symbols, and a fully interactive mini-game.</p>
+                <div class="project-tags">
+                    <span>HTML</span>
+                    <span>CSS</span>
+                    <span>JavaScript</span>
+                </div>
+            </div>
+            <div class="project-card" style="background: rgba(131, 56, 236, 0.1); border: 1px solid #8338ec;">
+                <h3 style="color: #ffffff;">Scratch Games</h3>
+                <p style="color: #c4b5fd;">Various games created on Scratch, learning the fundamentals of game logic, design, and interactive storytelling.</p>
+                <div class="project-tags">
+                    <span>Scratch</span>
+                    <span>Game Design</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <h2>Experience</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>Self-Taught Programmer</h3>
+                <div class="company">Independent Learning</div>
+                <div class="period">Present</div>
+                <p>Learning code by myself, exploring new technologies, and building projects through hands-on practice.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>Game Developer</h3>
+                <div class="company">Scratch</div>
+                <div class="period">Past</div>
+                <p>Making games on Scratch, learning the basics of logic, design, and interactive storytelling.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education">
+        <h2>Education</h2>
+        <div class="education-list">
+            <div class="education-item">
+                <h3>Codecats Student</h3>
+                <div class="school">Macleods Landing</div>
+                <div class="period">2020 - 2024</div>
+            </div>
+            <div class="education-item">
+                <h3>Ttmath Student</h3>
+                <div class="school">Macleods Landing</div>
+                <div class="period">2020 - 2024</div>
+            </div>
+            <div class="education-item">
+                <h3>CodeNinjas Coder</h3>
+                <div class="school">CodeNinjas</div>
+                <div class="period">2020 - 2024</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Warship Battle Section -->
+    <section class="warship-section" id="warship">
+        <h2>Warship Battle</h2>
+        <div class="game-stats">
+            <span class="score">Score: <strong id="scoreDisplay">0</strong></span>
+            <span class="enemies">Enemies: <strong id="enemyDisplay">0</strong></span>
+            <span class="warships">Warships: <strong id="warshipDisplay">0</strong></span>
+            <span style="color: #ffbe0b;">Base HP: <strong id="baseHpDisplay">100</strong></span>
+            <span style="color: #a78bfa;">Wave: <strong id="waveDisplay">1</strong></span>
+        </div>
+        <canvas id="warshipCanvas" class="warship-canvas" width="1000" height="700"></canvas>
+        <p style="color: #a78bfa; font-family: 'Segoe UI', system-ui, sans-serif; margin-bottom: 1rem; font-size: 0.9rem;">Use <strong style="color: #06d6a0;">W A S D</strong> to move and <strong style="color: #06d6a0;">SPACE</strong> to melee attack</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; align-items: center; flex-wrap: wrap;">
+            <button class="spawn-btn" id="spawnBtn">Spawn Warship</button>
+            <button class="spawn-btn" id="respawnBtn" style="background: linear-gradient(135deg, #06d6a0, #3a86ff); display: none;">Respawn</button>
+        </div>
+    </section>
+
+    <script>
+        // Generate background code symbols
+        const symbols = ['{ }', '</>', '()', '[]', '+', '=>', '&&', '||', '!=', '===', 'fn', 'if', 'for', 'let', 'const', '&&', '||', '=>', '...', '/* */', '&&', '||', '!=', '===', 'fn', 'if', 'for', 'let', 'const'];
+        const container = document.getElementById('bgSymbols');
+
+        for (let i = 0; i < 60; i++) {
+            const span = document.createElement('span');
+            span.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+            span.style.left = Math.random() * 100 + '%';
+            span.style.top = Math.random() * 100 + '%';
+            span.style.fontSize = (0.8 + Math.random() * 0.8) + 'rem';
+            span.style.opacity = 0.15 + Math.random() * 0.2;
+            span.style.animationDelay = (Math.random() * 5) + 's';
+            span.style.animationDuration = (2 + Math.random() * 4) + 's';
+            container.appendChild(span);
+        }
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Warship Battle Game
+        const canvas = document.getElementById('warshipCanvas');
+        const ctx = canvas.getContext('2d');
+        const spawnBtn = document.getElementById('spawnBtn');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const enemyDisplay = document.getElementById('enemyDisplay');
+        const warshipDisplay = document.getElementById('warshipDisplay');
+        const baseHpDisplay = document.getElementById('baseHpDisplay');
+        const waveDisplay = document.getElementById('waveDisplay');
+
+        let playerWarships = [];
+        let enemyWarships = [];
+        let baseDefenders = [];
+        let playerBullets = [];
+        let enemyBullets = [];
+        let missiles = [];
+        let explosions = [];
+        let obstacles = [];
+        let score = 0;
+        let enemySpawnTimer = 0;
+        let waveNumber = 1;
+        let enemiesInWave = 5;
+        let enemiesSpawnedInWave = 0;
+        let waveDelay = 180;
+        let waveAnnounceTimer = 0;
+        let waveActive = false;
+        let defenderSpawnTimer = 0;
+
+        const keys = {};
+        document.addEventListener('keydown', e => { keys[e.key.toLowerCase()] = true; });
+        document.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
+
+        const base = {
+            x: 500,
+            y: 670,
+            width: 120,
+            height: 40,
+            hp: 100,
+            maxHp: 100,
+            turrets: [
+                { x: -40, y: -10, shootTimer: 0, cooldown: 45 },
+                { x: 0, y: -15, shootTimer: 0, cooldown: 35 },
+                { x: 40, y: -10, shootTimer: 0, cooldown: 45 }
+            ]
+        };
+
+        let gameOver = false;
+
+        const playerShip = {
+            x: 500,
+            y: 620,
+            width: 44,
+            height: 32,
+            color: '#06d6a0',
+            speed: 4,
+            meleeRange: 60,
+            meleeDamage: 1,
+            meleeCooldown: 0,
+            meleeMaxCooldown: 20,
+            isAttacking: false,
+            attackAngle: 0,
+            isAlive: true
+        };
+
+        function generateObstacles() {
+            obstacles = [];
+            const obstacleCount = 8;
+            for (let i = 0; i < obstacleCount; i++) {
+                obstacles.push({
+                    x: Math.random() * (canvas.width - 120) + 60,
+                    y: Math.random() * (canvas.height - 300) + 150,
+                    width: Math.random() * 60 + 40,
+                    height: Math.random() * 20 + 15,
+                    color: ['#8338ec', '#3a86ff', '#06d6a0', '#ffbe0b'][Math.floor(Math.random() * 4)]
+                });
+            }
+        }
+
+        class PlayerWarship {
+            constructor() {
+                this.x = Math.random() * (canvas.width - 60) + 30;
+                this.y = canvas.height - 80;
+                this.width = 40;
+                this.height = 30;
+                this.color = '#3a86ff';
+                this.shootTimer = 0;
+                this.dirX = Math.random() > 0.5 ? 1 : -1;
+                this.dirY = Math.random() > 0.5 ? 1 : -1;
+                this.speedX = Math.random() * 1.5 + 1;
+                this.speedY = Math.random() * 1.5 + 1;
+                this.changeTimer = 0;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y - this.height / 2);
+                ctx.lineTo(this.x - this.width / 2, this.y + this.height / 2);
+                ctx.lineTo(this.x + this.width / 2, this.y + this.height / 2);
+                ctx.closePath();
+                ctx.fill();
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+            }
+
+            shoot() {
+                if (enemyWarships.length === 0) return;
+                let nearest = null;
+                let nearestDist = Infinity;
+                enemyWarships.forEach(enemy => {
+                    const dx = enemy.x - this.x;
+                    const dy = enemy.y - this.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < nearestDist) {
+                        nearestDist = dist;
+                        nearest = enemy;
+                    }
+                });
+                if (nearest) {
+                    const dx = nearest.x - this.x;
+                    const dy = nearest.y - this.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const b = new Bullet(this.x, this.y, 0, '#06d6a0');
+                    b.vx = (dx / dist) * 8;
+                    b.vy = (dy / dist) * 8;
+                    b.isMultiDir = true;
+                    playerBullets.push(b);
+                }
+            }
+
+            update() {
+                this.x += this.speedX * this.dirX;
+                this.y += this.speedY * this.dirY;
+
+                if (this.x < 20) { this.x = 20; this.dirX *= -1; }
+                if (this.x > canvas.width - 20) { this.x = canvas.width - 20; this.dirX *= -1; }
+                if (this.y < canvas.height * 0.3) { this.y = canvas.height * 0.3; this.dirY *= -1; }
+                if (this.y > canvas.height - 20) { this.y = canvas.height - 20; this.dirY *= -1; }
+
+                this.changeTimer++;
+                if (this.changeTimer > 90) {
+                    if (Math.random() > 0.5) this.dirX *= -1;
+                    if (Math.random() > 0.5) this.dirY *= -1;
+                    this.speedX = Math.random() * 1.5 + 1;
+                    this.speedY = Math.random() * 1.5 + 1;
+                    this.changeTimer = 0;
+                }
+
+                this.shootTimer++;
+                if (this.shootTimer > 30) {
+                    this.shoot();
+                    this.shootTimer = 0;
+                }
+
+                if (Math.random() < 0.003 && enemyWarships.length > 0) {
+                    const target = enemyWarships[Math.floor(Math.random() * enemyWarships.length)];
+                    missiles.push(new Missile(this.x, this.y, target.x, target.y, '#06d6a0', 'player'));
+                }
+            }
+        }
+
+        class EnemyWarship {
+            constructor(isElite = false) {
+                this.x = Math.random() * (canvas.width - 60) + 30;
+                this.y = -30;
+                this.width = isElite ? 55 : 40;
+                this.height = isElite ? 40 : 30;
+                this.color = isElite ? '#ffbe0b' : '#ff006e';
+                this.speed = isElite ? 0.8 : Math.random() * 1.5 + 0.5;
+                this.shootTimer = Math.random() * 60;
+                this.direction = Math.random() > 0.5 ? 1 : -1;
+                this.moveSpeed = isElite ? 1.5 : Math.random() * 1 + 0.5;
+                this.isElite = isElite;
+                this.hp = isElite ? 5 : 1;
+                this.maxHp = this.hp;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y + this.height / 2);
+                ctx.lineTo(this.x - this.width / 2, this.y - this.height / 2);
+                ctx.lineTo(this.x + this.width / 2, this.y - this.height / 2);
+                ctx.closePath();
+                ctx.fill();
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+
+                if (this.isElite) {
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+
+                    const barWidth = 40;
+                    const barHeight = 4;
+                    ctx.fillStyle = '#333';
+                    ctx.fillRect(this.x - barWidth / 2, this.y - this.height / 2 - 12, barWidth, barHeight);
+                    ctx.fillStyle = '#06d6a0';
+                    ctx.fillRect(this.x - barWidth / 2, this.y - this.height / 2 - 12, barWidth * (this.hp / this.maxHp), barHeight);
+                }
+            }
+
+            shoot() {
+                let target = null;
+                let minDist = Infinity;
+
+                baseDefenders.forEach(d => {
+                    const dx = d.x - this.x;
+                    const dy = d.y - this.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < minDist) { minDist = dist; target = d; }
+                });
+
+                playerWarships.forEach(ws => {
+                    const dx = ws.x - this.x;
+                    const dy = ws.y - this.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < minDist) { minDist = dist; target = ws; }
+                });
+
+                if (playerShip.isAlive) {
+                    const dx = playerShip.x - this.x;
+                    const dy = playerShip.y - this.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < minDist) { minDist = dist; target = playerShip; }
+                }
+
+                if (target) {
+                    const dx = target.x - this.x;
+                    const dy = target.y - this.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const bulletSpeed = this.isElite ? 8 : 6;
+                    const b = new Bullet(this.x, this.y, 0, this.color);
+                    b.vx = (dx / dist) * bulletSpeed;
+                    b.vy = (dy / dist) * bulletSpeed;
+                    b.isMultiDir = true;
+                    enemyBullets.push(b);
+                }
+            }
+
+            update() {
+                this.y += this.speed;
+                this.x += this.moveSpeed * this.direction;
+                if (this.x < 20) { this.x = 20; this.direction *= -1; }
+                if (this.x > canvas.width - 20) { this.x = canvas.width - 20; this.direction *= -1; }
+                if (this.y < 20) { this.y = 20; this.speed = Math.abs(this.speed); }
+                if (this.y > canvas.height - 20) { this.y = canvas.height - 20; this.speed = -Math.abs(this.speed); }
+                this.shootTimer++;
+                const shootRate = this.isElite ? 30 : 45;
+                if (this.shootTimer > shootRate) {
+                    this.shoot();
+                    this.shootTimer = 0;
+                }
+
+                if (Math.random() < 0.003 && playerWarships.length > 0) {
+                    const target = playerWarships[Math.floor(Math.random() * playerWarships.length)];
+                    missiles.push(new Missile(this.x, this.y, target.x, target.y, this.color, 'enemy'));
+                }
+            }
+        }
+
+        class Bullet {
+            constructor(x, y, speed, color) {
+                this.x = x;
+                this.y = y;
+                this.speed = speed;
+                this.color = color;
+                this.radius = 3;
+                this.vx = 0;
+                this.vy = speed;
+                this.isMultiDir = false;
+                this.isShrapnel = false;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = this.color;
+            }
+
+            update() {
+                if (this.isMultiDir || this.isShrapnel) {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                } else {
+                    this.y += this.speed;
+                }
+            }
+        }
+
+        class BaseDefender {
+            constructor() {
+                this.x = base.x + (Math.random() - 0.5) * 100;
+                this.y = base.y - 60 - Math.random() * 80;
+                this.width = 38;
+                this.height = 30;
+                this.color = '#ffbe0b';
+                this.speed = 1.2;
+                this.shootTimer = 0;
+                this.shootCooldown = 120;
+                this.baseX = base.x;
+                this.baseY = base.y - 60;
+                this.orbitAngle = Math.random() * Math.PI * 2;
+                this.orbitRadius = 60 + Math.random() * 40;
+                this.hp = 5;
+                this.maxHp = 5;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y - this.height / 2);
+                ctx.lineTo(this.x - this.width / 2, this.y + this.height / 2);
+                ctx.lineTo(this.x + this.width / 2, this.y + this.height / 2);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.shadowBlur = 12;
+                ctx.shadowColor = this.color;
+
+                const barWidth = 30;
+                const barHeight = 4;
+                ctx.fillStyle = '#333';
+                ctx.fillRect(this.x - barWidth / 2, this.y - this.height / 2 - 10, barWidth, barHeight);
+                ctx.fillStyle = '#06d6a0';
+                ctx.fillRect(this.x - barWidth / 2, this.y - this.height / 2 - 10, barWidth * (this.hp / this.maxHp), barHeight);
+            }
+
+            shootShrapnel(targetX, targetY) {
+                const dx = targetX - this.x;
+                const dy = targetY - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                const baseVx = (dx / dist) * 6;
+                const baseVy = (dy / dist) * 6;
+
+                for (let i = 0; i < 8; i++) {
+                    const angle = (Math.PI * 2 / 8) * i;
+                    const spread = 2.5;
+                    const b = new Bullet(this.x, this.y, 0, '#ffbe0b');
+                    b.vx = baseVx + Math.cos(angle) * spread;
+                    b.vy = baseVy + Math.sin(angle) * spread;
+                    b.isShrapnel = true;
+                    b.radius = 2;
+                    b.life = 40;
+                    playerBullets.push(b);
+                }
+            }
+
+            update() {
+                this.orbitAngle += 0.015;
+                const targetX = this.baseX + Math.cos(this.orbitAngle) * this.orbitRadius;
+                const targetY = this.baseY + Math.sin(this.orbitAngle) * this.orbitRadius * 0.5;
+                this.x += (targetX - this.x) * 0.03;
+                this.y += (targetY - this.y) * 0.03;
+
+                this.x = Math.max(22, Math.min(canvas.width - 22, this.x));
+                this.y = Math.max(canvas.height * 0.5, Math.min(canvas.height - 50, this.y));
+
+                this.shootTimer++;
+                if (this.shootTimer >= this.shootCooldown && enemyWarships.length > 0) {
+                    let nearest = null;
+                    let nearestDist = Infinity;
+                    enemyWarships.forEach(enemy => {
+                        const dx = enemy.x - this.x;
+                        const dy = enemy.y - this.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < nearestDist) {
+                            nearestDist = dist;
+                            nearest = enemy;
+                        }
+                    });
+
+                    if (nearest && nearestDist < 350) {
+                        this.shootShrapnel(nearest.x, nearest.y);
+                    }
+                    this.shootTimer = 0;
+                }
+            }
+        }
+
+        class Missile {
+            constructor(x, y, targetX, targetY, color, team) {
+                this.x = x;
+                this.y = y;
+                this.targetX = targetX;
+                this.targetY = targetY;
+                this.color = color;
+                this.team = team;
+                this.speed = 4;
+                this.radius = 6;
+                this.trail = [];
+                this.aoeRadius = 80;
+            }
+
+            draw() {
+                this.trail.forEach((t, i) => {
+                    ctx.fillStyle = this.color;
+                    ctx.globalAlpha = (i / this.trail.length) * 0.4;
+                    ctx.beginPath();
+                    ctx.arc(t.x, t.y, this.radius * (i / this.trail.length), 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                ctx.globalAlpha = 1;
+
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius - 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = this.color;
+            }
+
+            update() {
+                this.trail.push({ x: this.x, y: this.y });
+                if (this.trail.length > 12) this.trail.shift();
+
+                const dx = this.targetX - this.x;
+                const dy = this.targetY - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist > 0) {
+                    this.x += (dx / dist) * this.speed;
+                    this.y += (dy / dist) * this.speed;
+                }
+            }
+
+            hasReachedTarget() {
+                const dx = this.targetX - this.x;
+                const dy = this.targetY - this.y;
+                return Math.sqrt(dx * dx + dy * dy) < 15;
+            }
+
+            explode() {
+                explosions.push(new BigExplosion(this.x, this.y, this.color));
+
+                if (this.team === 'player') {
+                    enemyWarships = enemyWarships.filter(e => {
+                        const dx = e.x - this.x;
+                        const dy = e.y - this.y;
+                        if (Math.sqrt(dx * dx + dy * dy) < this.aoeRadius) {
+                            score += 10;
+                            return false;
+                        }
+                        return true;
+                    });
+                    scoreDisplay.textContent = score;
+                    enemyDisplay.textContent = enemyWarships.length;
+                } else {
+                    const ps = playerShip;
+                    const pdx = ps.x - this.x;
+                    const pdy = ps.y - this.y;
+                    if (Math.sqrt(pdx * pdx + pdy * pdy) < this.aoeRadius) {
+                        ps.isAlive = false;
+                    }
+                    playerWarships = playerWarships.filter(p => {
+                        const dx = p.x - this.x;
+                        const dy = p.y - this.y;
+                        return Math.sqrt(dx * dx + dy * dy) >= this.aoeRadius;
+                    });
+                    warshipDisplay.textContent = playerWarships.length;
+                }
+            }
+        }
+
+        class BigExplosion {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.particles = [];
+                this.ringRadius = 0;
+                this.maxRingRadius = 80;
+                for (let i = 0; i < 30; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 8 + 2;
+                    this.particles.push({
+                        x: 0,
+                        y: 0,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed,
+                        life: 40,
+                        color: [color, '#ffbe0b', '#ffffff'][Math.floor(Math.random() * 3)]
+                    });
+                }
+            }
+
+            draw() {
+                ctx.strokeStyle = this.color;
+                ctx.globalAlpha = 0.3 * (1 - this.ringRadius / this.maxRingRadius);
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.ringRadius, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+
+                this.particles.forEach(p => {
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = p.life / 40;
+                    ctx.beginPath();
+                    ctx.arc(this.x + p.x, this.y + p.y, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                ctx.globalAlpha = 1;
+            }
+
+            update() {
+                this.ringRadius += 3;
+                this.particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vx *= 0.96;
+                    p.vy *= 0.96;
+                    p.life--;
+                });
+                this.particles = this.particles.filter(p => p.life > 0);
+            }
+        }
+
+        class Explosion {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.particles = [];
+                for (let i = 0; i < 15; i++) {
+                    this.particles.push({
+                        x: 0,
+                        y: 0,
+                        vx: (Math.random() - 0.5) * 6,
+                        vy: (Math.random() - 0.5) * 6,
+                        life: 30,
+                        color: ['#ff006e', '#ffbe0b', '#06d6a0'][Math.floor(Math.random() * 3)]
+                    });
+                }
+            }
+
+            draw() {
+                this.particles.forEach(p => {
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = p.life / 30;
+                    ctx.beginPath();
+                    ctx.arc(this.x + p.x, this.y + p.y, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                ctx.globalAlpha = 1;
+            }
+
+            update() {
+                this.particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.life--;
+                });
+                this.particles = this.particles.filter(p => p.life > 0);
+            }
+        }
+
+        function spawnPlayerWarship() {
+            playerWarships.push(new PlayerWarship());
+            warshipDisplay.textContent = playerWarships.length;
+        }
+
+        function spawnEnemyWarship() {
+            const eliteChance = Math.min(0.15 + (waveNumber - 1) * 0.05, 0.5);
+            const isElite = Math.random() < eliteChance;
+            enemyWarships.push(new EnemyWarship(isElite));
+            enemiesSpawnedInWave++;
+            enemyDisplay.textContent = enemyWarships.length;
+        }
+
+        function startNextWave() {
+            if (gameOver) return;
+            waveNumber++;
+            enemiesInWave = 5 + waveNumber * 3;
+            enemiesSpawnedInWave = 0;
+            waveActive = true;
+            waveAnnounceTimer = 120;
+            waveDisplay.textContent = waveNumber;
+        }
+
+        function drawBase() {
+            const b = base;
+
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(b.x - b.width / 2, b.y - b.height / 2, b.width, b.height);
+            ctx.strokeStyle = '#3a86ff';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(b.x - b.width / 2, b.y - b.height / 2, b.width, b.height);
+
+            ctx.fillStyle = '#3a86ff';
+            ctx.globalAlpha = 0.3;
+            ctx.fillRect(b.x - b.width / 2, b.y - b.height / 2, b.width * (b.hp / b.maxHp), b.height);
+            ctx.globalAlpha = 1;
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '12px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('BASE', b.x, b.y + 5);
+
+            b.turrets.forEach(turret => {
+                const tx = b.x + turret.x;
+                const ty = b.y + turret.y;
+
+                ctx.fillStyle = '#3a86ff';
+                ctx.beginPath();
+                ctx.arc(tx, ty, 8, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = '#06d6a0';
+                ctx.beginPath();
+                ctx.arc(tx, ty, 4, 0, Math.PI * 2);
+                ctx.fill();
+
+                turret.shootTimer++;
+                if (turret.shootTimer >= turret.cooldown && enemyWarships.length > 0) {
+                    let nearest = null;
+                    let nearestDist = Infinity;
+                    enemyWarships.forEach(enemy => {
+                        const dx = enemy.x - tx;
+                        const dy = enemy.y - ty;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < nearestDist) {
+                            nearestDist = dist;
+                            nearest = enemy;
+                        }
+                    });
+
+                    if (nearest && nearestDist < 200) {
+                        const dx = nearest.x - tx;
+                        const dy = nearest.y - ty;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        playerBullets.push({
+                            x: tx,
+                            y: ty,
+                            vx: (dx / dist) * 5,
+                            vy: (dy / dist) * 5,
+                            color: '#06d6a0',
+                            radius: 3,
+                            isTurretBullet: true
+                        });
+                    }
+                    turret.shootTimer = 0;
+                }
+            });
+        }
+
+        function drawObstacles() {
+            obstacles.forEach(obs => {
+                ctx.fillStyle = obs.color;
+                ctx.globalAlpha = 0.5;
+                ctx.fillRect(obs.x - obs.width / 2, obs.y - obs.height / 2, obs.width, obs.height);
+                ctx.strokeStyle = obs.color;
+                ctx.lineWidth = 2;
+                ctx.strokeRect(obs.x - obs.width / 2, obs.y - obs.height / 2, obs.width, obs.height);
+                ctx.globalAlpha = 1;
+            });
+        }
+
+        function checkObstacleCollisions(bullet) {
+            for (let i = 0; i < obstacles.length; i++) {
+                const obs = obstacles[i];
+                if (bullet.x > obs.x - obs.width / 2 && bullet.x < obs.x + obs.width / 2 &&
+                    bullet.y > obs.y - obs.height / 2 && bullet.y < obs.y + obs.height / 2) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function checkCollisions() {
+            for (let bi = playerBullets.length - 1; bi >= 0; bi--) {
+                const bullet = playerBullets[bi];
+                if (checkObstacleCollisions(bullet)) {
+                    playerBullets.splice(bi, 1);
+                    continue;
+                }
+                for (let ei = enemyWarships.length - 1; ei >= 0; ei--) {
+                    const enemy = enemyWarships[ei];
+                    const dx = bullet.x - enemy.x;
+                    const dy = bullet.y - enemy.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 25) {
+                        enemy.hp--;
+                        if (enemy.hp <= 0) {
+                            explosions.push(new Explosion(enemy.x, enemy.y));
+                            enemyWarships.splice(ei, 1);
+                            score += enemy.isElite ? 50 : 10;
+                            scoreDisplay.textContent = score;
+                            enemyDisplay.textContent = enemyWarships.length;
+                        }
+                        playerBullets.splice(bi, 1);
+                        break;
+                    }
+                }
+            }
+
+            for (let bi = enemyBullets.length - 1; bi >= 0; bi--) {
+                const bullet = enemyBullets[bi];
+                if (checkObstacleCollisions(bullet)) {
+                    enemyBullets.splice(bi, 1);
+                    continue;
+                }
+                const ps = playerShip;
+                if (ps.isAlive) {
+                    const dx = bullet.x - ps.x;
+                    const dy = bullet.y - ps.y;
+                    if (Math.sqrt(dx * dx + dy * dy) < 25) {
+                        explosions.push(new Explosion(ps.x, ps.y));
+                        ps.isAlive = false;
+                        enemyBullets.splice(bi, 1);
+                        continue;
+                    }
+                }
+                for (let pi = playerWarships.length - 1; pi >= 0; pi--) {
+                    const player = playerWarships[pi];
+                    const pdx = bullet.x - player.x;
+                    const pdy = bullet.y - player.y;
+                    const dist = Math.sqrt(pdx * pdx + pdy * pdy);
+                    if (dist < 25) {
+                        explosions.push(new Explosion(player.x, player.y));
+                        playerWarships.splice(pi, 1);
+                        enemyBullets.splice(bi, 1);
+                        warshipDisplay.textContent = playerWarships.length;
+                        break;
+                    }
+                }
+
+                for (let di = baseDefenders.length - 1; di >= 0; di--) {
+                    const defender = baseDefenders[di];
+                    const pdx = bullet.x - defender.x;
+                    const pdy = bullet.y - defender.y;
+                    const dist = Math.sqrt(pdx * pdx + pdy * pdy);
+                    if (dist < 25) {
+                        defender.hp--;
+                        enemyBullets.splice(bi, 1);
+                        if (defender.hp <= 0) {
+                            explosions.push(new Explosion(defender.x, defender.y));
+                            baseDefenders.splice(di, 1);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        function drawPlayerShip() {
+            const ps = playerShip;
+            if (!ps.isAlive) return;
+
+            if (keys['w']) ps.y -= ps.speed;
+            if (keys['s']) ps.y += ps.speed;
+            if (keys['a']) ps.x -= ps.speed;
+            if (keys['d']) ps.x += ps.speed;
+
+            ps.x = Math.max(22, Math.min(canvas.width - 22, ps.x));
+            ps.y = Math.max(canvas.height * 0.3, Math.min(canvas.height - 22, ps.y));
+
+            obstacles.forEach(obs => {
+                if (ps.x > obs.x - obs.width / 2 - 20 && ps.x < obs.x + obs.width / 2 + 20 &&
+                    ps.y > obs.y - obs.height / 2 - 20 && ps.y < obs.y + obs.height / 2 + 20) {
+                    const dx = ps.x - obs.x;
+                    const dy = ps.y - obs.y;
+                    if (Math.abs(dx) > Math.abs(dy)) {
+                        ps.x = dx > 0 ? obs.x + obs.width / 2 + 22 : obs.x - obs.width / 2 - 22;
+                    } else {
+                        ps.y = dy > 0 ? obs.y + obs.height / 2 + 22 : obs.y - obs.height / 2 - 22;
+                    }
+                }
+            });
+
+            ctx.fillStyle = ps.color;
+            ctx.beginPath();
+            ctx.moveTo(ps.x, ps.y - ps.height / 2);
+            ctx.lineTo(ps.x - ps.width / 2, ps.y + ps.height / 2);
+            ctx.lineTo(ps.x + ps.width / 2, ps.y + ps.height / 2);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(ps.x, ps.y - ps.height / 2);
+            ctx.lineTo(ps.x - ps.width / 2, ps.y + ps.height / 2);
+            ctx.lineTo(ps.x + ps.width / 2, ps.y + ps.height / 2);
+            ctx.closePath();
+            ctx.stroke();
+
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = ps.color;
+
+            if (ps.isAttacking) {
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 4;
+                ctx.globalAlpha = 0.8;
+                ctx.beginPath();
+                ctx.arc(ps.x, ps.y, ps.meleeRange, -Math.PI / 2 - 0.8, -Math.PI / 2 + 0.8);
+                ctx.stroke();
+
+                ctx.fillStyle = '#06d6a0';
+                ctx.globalAlpha = 0.3;
+                ctx.beginPath();
+                ctx.moveTo(ps.x, ps.y);
+                ctx.arc(ps.x, ps.y, ps.meleeRange, -Math.PI / 2 - 0.8, -Math.PI / 2 + 0.8);
+                ctx.closePath();
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+
+            if (keys[' ']) {
+                if (ps.meleeCooldown <= 0) {
+                    ps.isAttacking = true;
+                    ps.meleeCooldown = ps.meleeMaxCooldown;
+
+                    for (let ei = enemyWarships.length - 1; ei >= 0; ei--) {
+                        const enemy = enemyWarships[ei];
+                        const dx = enemy.x - ps.x;
+                        const dy = enemy.y - ps.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < ps.meleeRange) {
+                            enemy.hp -= ps.meleeDamage;
+                            if (enemy.hp <= 0) {
+                                explosions.push(new Explosion(enemy.x, enemy.y));
+                                enemyWarships.splice(ei, 1);
+                                score += enemy.isElite ? 50 : 10;
+                                enemyDisplay.textContent = enemyWarships.length;
+                                scoreDisplay.textContent = score;
+                            }
+                        }
+                    }
+                }
+            } else {
+                ps.isAttacking = false;
+            }
+
+            if (ps.meleeCooldown > 0) ps.meleeCooldown--;
+        }
+
+        function gameLoop() {
+            if (gameOver) {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#ff006e';
+                ctx.font = 'bold 48px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 20);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '24px monospace';
+                ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2 + 30);
+                ctx.font = '18px monospace';
+                ctx.fillStyle = '#a78bfa';
+                ctx.fillText('Refresh to play again', canvas.width / 2, canvas.height / 2 + 70);
+                return;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.shadowBlur = 0;
+
+            drawObstacles();
+            drawPlayerShip();
+            drawBase();
+
+            if (!playerShip.isAlive) {
+                respawnBtn.style.display = 'inline-block';
+            }
+
+            if (waveAnnounceTimer > 0) {
+                waveAnnounceTimer--;
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#ffbe0b';
+                ctx.font = 'bold 42px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText('WAVE ' + waveNumber, canvas.width / 2, canvas.height / 2 - 10);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '20px monospace';
+                ctx.fillText(enemiesInWave + ' enemies incoming', canvas.width / 2, canvas.height / 2 + 30);
+            }
+
+            enemySpawnTimer++;
+            if (waveActive && enemySpawnTimer > 40 && enemiesSpawnedInWave < enemiesInWave) {
+                spawnEnemyWarship();
+                enemySpawnTimer = 0;
+            }
+
+            if (waveActive && enemiesSpawnedInWave >= enemiesInWave && enemyWarships.length === 0) {
+                waveActive = false;
+                setTimeout(() => { if (!gameOver) startNextWave(); }, 3000);
+            }
+
+            baseDefenders.forEach(d => {
+                d.update();
+                d.draw();
+            });
+
+            defenderSpawnTimer++;
+            if (defenderSpawnTimer > 600 && baseDefenders.length < 2) {
+                baseDefenders.push(new BaseDefender());
+                defenderSpawnTimer = 0;
+            }
+
+            playerWarships.forEach(ws => {
+                ws.update();
+                ws.draw();
+            });
+
+            enemyWarships.forEach(ws => {
+                ws.update();
+                ws.draw();
+            });
+
+            playerBullets.forEach(bullet => {
+                if (bullet.isTurretBullet) {
+                    bullet.x += bullet.vx;
+                    bullet.y += bullet.vy;
+                    ctx.fillStyle = bullet.color;
+                    ctx.beginPath();
+                    ctx.arc(bullet.x, bullet.y, bullet.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = bullet.color;
+                } else if (bullet.isShrapnel) {
+                    bullet.x += bullet.vx;
+                    bullet.y += bullet.vy;
+                    bullet.vx *= 0.98;
+                    bullet.vy *= 0.98;
+                    bullet.life--;
+                    ctx.globalAlpha = bullet.life / 40;
+                    ctx.fillStyle = bullet.color;
+                    ctx.beginPath();
+                    ctx.arc(bullet.x, bullet.y, bullet.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.globalAlpha = 1;
+                } else {
+                    bullet.update();
+                    bullet.draw();
+                }
+            });
+
+            enemyBullets.forEach(bullet => {
+                bullet.update();
+                bullet.draw();
+            });
+
+            missiles.forEach(missile => {
+                missile.update();
+                missile.draw();
+
+                if (missile.hasReachedTarget()) {
+                    missile.explode();
+                    missile.dead = true;
+                }
+
+                if (missile.x < 0 || missile.x > canvas.width || missile.y < 0 || missile.y > canvas.height) {
+                    missile.dead = true;
+                }
+            });
+            missiles = missiles.filter(m => !m.dead);
+
+            explosions.forEach(exp => {
+                exp.update();
+                exp.draw();
+            });
+
+            checkCollisions();
+
+            playerBullets = playerBullets.filter(b => {
+                if (b.isTurretBullet) {
+                    return b.x > 0 && b.x < canvas.width && b.y > 0 && b.y < canvas.height;
+                }
+                if (b.isShrapnel) {
+                    return b.life > 0 && b.x > 0 && b.x < canvas.width && b.y > 0 && b.y < canvas.height;
+                }
+                if (b.isMultiDir) {
+                    return b.x > 0 && b.x < canvas.width && b.y > 0 && b.y < canvas.height;
+                }
+                return b.y > 0 && b.y < canvas.height;
+            });
+            enemyBullets = enemyBullets.filter(b => {
+                if (b.isMultiDir) {
+                    return b.x > 0 && b.x < canvas.width && b.y > 0 && b.y < canvas.height;
+                }
+                return b.y > 0 && b.y < canvas.height;
+            });
+            enemyWarships = enemyWarships.filter(e => {
+                if (e.y > canvas.height - 60) {
+                    base.hp -= e.isElite ? 15 : 5;
+                    baseHpDisplay.textContent = Math.max(0, base.hp);
+                    explosions.push(new Explosion(e.x, e.y));
+                    if (base.hp <= 0) {
+                        gameOver = true;
+                    }
+                    return false;
+                }
+                return true;
+            });
+            explosions = explosions.filter(e => e.particles && e.particles.length > 0);
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        spawnBtn.addEventListener('click', spawnPlayerWarship);
+
+        const respawnBtn = document.getElementById('respawnBtn');
+        respawnBtn.addEventListener('click', () => {
+            playerShip.x = 500;
+            playerShip.y = 620;
+            playerShip.isAlive = true;
+            respawnBtn.style.display = 'none';
+        });
+
+        generateObstacles();
+        waveActive = true;
+        waveAnnounceTimer = 120;
+        gameLoop();
+    </script>
+</body>
+</html>
